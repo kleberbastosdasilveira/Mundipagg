@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using Mundipagg.Domain.Entities;
 using Mundipagg.Domain.Interfaces;
 using Mundipagg.Infra.Data.Context;
@@ -23,22 +24,22 @@ namespace Mundipagg.Infra.Data.Repository
             _mundipaggDb.Produtos.ReplaceOne(produto,entity);
         }
 
-        public Produto ObterPorId(Guid id)
+        public Produto ObterPorId(ObjectId id)
         {
-            throw new NotImplementedException();
+            return _mundipaggDb.Produtos.Find<Produto>(produto => produto.Id == id).FirstOrDefault();
         }
 
         public IEnumerable<Produto> ObterTodos()
         {
-            throw new NotImplementedException();
+            return _mundipaggDb.Produtos.Find(prod => true).ToList();
         }
 
-        public void Remover(Guid id)
+        public void Remover(ObjectId id)
         {
-            throw new NotImplementedException();
+            _mundipaggDb.Produtos.DeleteOne(produto => produto.Id == id);
         }
 
-        public void SaveChanges(Produto entity)
+        public void Create(Produto entity)
         {
             _mundipaggDb.Produtos.InsertOne(entity);
         }
