@@ -9,10 +9,10 @@ namespace Mundipagg.Domain.Interfaces
 {
     public interface IRepositoryProduto
     {
-        Produto ObterPorId(ObjectId id);
-        IEnumerable<Produto> ObterTodos();
-        void Atualizar(Produto entity);
-        void Remover(ObjectId id);
-        void Create(Produto entity);
+        Task<Produto> ObterPorId(ObjectId id);
+        Task<IEnumerable<Produto>> ObterTodos(int inicio,int limit);
+        Task Atualizar(Produto entity);
+        Task Remover(ObjectId id);
+        Task Create(Produto entity);
     }
 }

@@ -18,30 +18,40 @@ namespace Mundipagg.Infra.Data.Repository
             _mundipaggDb = mundipaggDb;
         }
 
-        public void Atualizar(Produto entity)
+        public async Task Atualizar(Produto entity)
         {
             var produto = Builders<Produto>.Filter.Eq(produto => produto.Id, entity.Id);
-            _mundipaggDb.Produtos.ReplaceOne(produto,entity);
+            await _mundipaggDb.Produtos.ReplaceOneAsync(produto, entity);
         }
 
-        public Produto ObterPorId(ObjectId id)
+        public async Task<Produto> ObterPorId(ObjectId id)
         {
-            return _mundipaggDb.Produtos.Find<Produto>(produto => produto.Id == id).FirstOrDefault();
+            var produto = await _mundipaggDb.Produtos.FindAsync<Produto>(produto => produto.Id == id);
+            return await produto.FirstOrDefaultAsync();
         }
 
-        public IEnumerable<Produto> ObterTodos()
+        public async Task<IEnumerable<Produto>> ObterTodos(int inicio , int limit )
         {
-            return _mundipaggDb.Produtos.Find(prod => true).ToList();
+            return await _mundipaggDb.Produtos.Find(prod => true).Skip(inicio).Limit(limit).ToListAsync();
         }
 
-        public void Remover(ObjectId id)
+        public async Task Remover(ObjectId id)
         {
-            _mundipaggDb.Produtos.DeleteOne(produto => produto.Id == id);
+           await _mundipaggDb.Produtos.DeleteOneAsync(produto => produto.Id == id);
         }
 
-        public void Create(Produto entity)
+        public async Task Create(Produto entity)
         {
-            _mundipaggDb.Produtos.InsertOne(entity);
+            try
+            {
+                await _mundipaggDb.Produtos.InsertOneAsync(entity);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+           
         }
     }
 }

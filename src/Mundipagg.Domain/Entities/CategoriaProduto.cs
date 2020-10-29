@@ -4,9 +4,12 @@ using System.Text;
 
 namespace Mundipagg.Domain.Entities
 {
-    public class CategoriaProduto
+    public class CategoriaProduto : Entity
     {
-        public int Id { get; set; }
-        public string Categoria { get; set; }
+        public CategoriaProduto(string categoria)
+        {
+            Categoria = categoria;
+        }
+        public string Categoria { get; private set; }
     }
 }

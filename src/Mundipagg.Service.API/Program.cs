@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Mundipagg.Services.API
+namespace Mundipagg.Service.API
 {
     public class Program
     {

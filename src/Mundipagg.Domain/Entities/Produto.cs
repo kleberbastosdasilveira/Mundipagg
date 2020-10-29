@@ -4,18 +4,25 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mundipagg.Domain.Entities
+namespace Mundipagg.Domain.Entities 
 {
-    public class Produto
+    public class Produto : Entity
     {
+        public Produto(string nomeProduto, string descricaoProduto, string marcaProduto, decimal preco, string imagem, CategoriaProduto categoriadoProduto)
+        {
+            NomeProduto = nomeProduto;
+            DescricaoProduto = descricaoProduto;
+            MarcaProduto = marcaProduto;
+            Preco = preco;
+            Imagem = imagem;
+            CategoriadoProduto = categoriadoProduto;
+        }
 
-        [BsonId]
-        public ObjectId Id { get; set; }
-        public string NomeProduto { get; set; }
-        public string DescricaoProduto { get; set; }
-        public string MarcaProduto { get; set; }
-        public decimal Preco { get; set; }
-        public string Imagem { get; set; }
-        public CategoriaProduto CategoriadoProduto { get; set; }
+        public string NomeProduto { get; private set; }
+        public string DescricaoProduto { get; private set; }
+        public string MarcaProduto { get; private set; }
+        public decimal Preco { get; private set; }
+        public string Imagem { get; private set; }
+        public CategoriaProduto CategoriadoProduto { get; private set; }
     }
 }

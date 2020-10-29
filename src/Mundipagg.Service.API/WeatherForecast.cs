@@ -1,6 +1,6 @@
 using System;
 
-namespace Mundipagg.Aplication.API
+namespace Mundipagg.Service.API
 {
     public class WeatherForecast
     {
