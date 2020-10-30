@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Mundipagg.Domain.Interfaces
+﻿namespace Mundipagg.Domain.Interfaces
 {
     public interface IMundipaggStoreDatabaseSettings
     {

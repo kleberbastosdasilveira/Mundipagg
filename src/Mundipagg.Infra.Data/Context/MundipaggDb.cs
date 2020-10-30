@@ -1,9 +1,6 @@
 ﻿using MongoDB.Driver;
 using Mundipagg.Domain.Entities;
 using Mundipagg.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Mundipagg.Infra.Data.Context
 {
@@ -14,7 +11,7 @@ namespace Mundipagg.Infra.Data.Context
         public MundipaggDb(IMundipaggStoreDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
-             database = client.GetDatabase(settings.DatabaseName);
+            database = client.GetDatabase(settings.DatabaseName);
             _settings = settings;
         }
 

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Mundipagg.Domain.Entities
+﻿namespace Mundipagg.Domain.Entities
 {
-    public class CategoriaProduto : Entity
+    public class CategoriaProduto
     {
         public CategoriaProduto(string categoria)
         {

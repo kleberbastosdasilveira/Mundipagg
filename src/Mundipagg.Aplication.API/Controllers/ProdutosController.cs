@@ -1,35 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Mundipagg.Domain.Entities;
-using Mundipagg.Domain.Interfaces;
+using Mundipagg.Aplication.Interfaces;
+using Mundipagg.Aplication.Services;
 using Mundipagg.Aplication.ViewModels;
-using MongoDB.Bson;
+using Mundipagg.Domain.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Mundipagg.Services.API.Controllers
 {
     [Route("api/produtos")]
-    [ApiController]
-    public class ProdutosController : ControllerBase
+    public class ProdutosController : BaseController
     {
-        private readonly IRepositoryProduto _repositoryProduto;
+
         private readonly IMapper _mapper;
-        public ProdutosController(IRepositoryProduto repositoryProduto, IMapper mapper)
+        private readonly IRepositoryProdutoService _repositoryProdutoService;
+        private readonly IProdutoService _produtoService;
+        public ProdutosController(IMapper mapper,
+                                  IRepositoryProdutoService repositoryProdutoService,
+                                  IProdutoService produtoService,
+                                  INotificador notificador) : base(notificador)
         {
-            _repositoryProduto = repositoryProduto;
             _mapper = mapper;
+            _repositoryProdutoService = repositoryProdutoService;
+            _produtoService = produtoService;
+
         }
 
         [HttpGet]
         public async Task<IEnumerable<ProdutoViewModel>> ObterTodos(int inicio = 0, int limit = 50)
         {
-            return _mapper.Map<IEnumerable<ProdutoViewModel>>(await _repositoryProduto.ObterTodos(inicio, limit));
+            return _mapper.Map<IEnumerable<ProdutoViewModel>>(await _repositoryProdutoService.ObterTodos(inicio, limit));
         }
 
-        [HttpGet("{id:Guid}")]
+        [HttpGet("{id:length(24)}")]
         public async Task<ActionResult<ProdutoViewModel>> ObterPorId(string id)
         {
             var produtoViewModel = await ObterProduto(id);
@@ -40,55 +44,41 @@ namespace Mundipagg.Services.API.Controllers
         [HttpPost]
         public async Task<ActionResult<ProdutoViewModel>> Adicionar(ProdutoViewModel produtoViewModel)
         {
-            if(!ModelState.IsValid) return NotFound();
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+            await _produtoService.Criar(_mapper.Map<Produto>(produtoViewModel));
+            return CustomResponse(produtoViewModel);
+        }
 
-            var imagemNome = Guid.NewGuid() + "_" + produtoViewModel.Imagem;
-            if (!UploadArquivo(produtoViewModel.ImagemUpload, imagemNome))
+        [HttpPut("{id:length(24)}")]
+        public async Task<IActionResult> Atualizar(string id, ProdutoViewModel produtoViewModel)
+        {
+            if (id != produtoViewModel.Id)
             {
-                return produtoViewModel;
+                NotificarErro("Os ids informados não são iguais!");
+                return CustomResponse();
             }
-            produtoViewModel.Imagem = imagemNome;
-            await _repositoryProduto.Create(_mapper.Map<Produto>(produtoViewModel));
+            //var produtoAtualizar = await ObterProduto(id);
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            return produtoViewModel;
+            await _produtoService.Atualizar(produtoViewModel.Id, _mapper.Map<Produto>(produtoViewModel));
 
-
+            return CustomResponse(produtoViewModel);
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpDelete("{id:length(24)}")]
+        public async Task<ActionResult<ProdutoViewModel>> Delete(string id)
         {
-        }
+            var produto = await ObterProduto(id);
+            if (produto == null) return NotFound();
+            await _produtoService.Remover(id);
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return CustomResponse(produto);
+
         }
 
         private async Task<ProdutoViewModel> ObterProduto(string id)
         {
-            return _mapper.Map<ProdutoViewModel>(await _repositoryProduto.ObterPorId(ObjectId.Parse(id)));
-        }
-        private bool UploadArquivo(string arquivo, string imgNome)
-        {
-            if (string.IsNullOrEmpty(arquivo))
-            {
-                return false;
-            }
-
-            var imageDataByteArray = Convert.FromBase64String(arquivo);
-
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens", imgNome);
-
-            if (System.IO.File.Exists(filePath))
-            {
-               
-                return false;
-            }
-
-            System.IO.File.WriteAllBytes(filePath, imageDataByteArray);
-
-            return true;
+            return _mapper.Map<ProdutoViewModel>(await _repositoryProdutoService.ObterPorId(id));
         }
     }
 }

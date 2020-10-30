@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 using Mundipagg.Aplication.AutoMapper;
-using AutoMapper;
 
 namespace Mundipagg.Services.API.Configurations
 {

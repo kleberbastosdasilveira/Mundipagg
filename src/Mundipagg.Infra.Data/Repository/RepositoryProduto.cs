@@ -1,11 +1,8 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using Mundipagg.Domain.Entities;
 using Mundipagg.Domain.Interfaces;
 using Mundipagg.Infra.Data.Context;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Mundipagg.Infra.Data.Repository
@@ -18,40 +15,32 @@ namespace Mundipagg.Infra.Data.Repository
             _mundipaggDb = mundipaggDb;
         }
 
-        public async Task Atualizar(Produto entity)
+        public async Task Atualizar(string id, Produto entity)
         {
-            var produto = Builders<Produto>.Filter.Eq(produto => produto.Id, entity.Id);
-            await _mundipaggDb.Produtos.ReplaceOneAsync(produto, entity);
+            //var produto = Builders<Produto>.Filter.Eq(produto => produto.Id, entity.Id);
+            await _mundipaggDb.Produtos.ReplaceOneAsync(produto => produto.Id == id, entity);
         }
 
-        public async Task<Produto> ObterPorId(ObjectId id)
+        public async Task<Produto> ObterPorId(string id)
         {
             var produto = await _mundipaggDb.Produtos.FindAsync<Produto>(produto => produto.Id == id);
             return await produto.FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Produto>> ObterTodos(int inicio , int limit )
+        public async Task<IEnumerable<Produto>> ObterTodos(int inicio, int limit)
         {
             return await _mundipaggDb.Produtos.Find(prod => true).Skip(inicio).Limit(limit).ToListAsync();
         }
 
-        public async Task Remover(ObjectId id)
+        public async Task Remover(string id)
         {
-           await _mundipaggDb.Produtos.DeleteOneAsync(produto => produto.Id == id);
+            await _mundipaggDb.Produtos.DeleteOneAsync(produto => produto.Id == id);
         }
 
-        public async Task Create(Produto entity)
+        public async Task Criar(Produto entity)
         {
-            try
-            {
-                await _mundipaggDb.Produtos.InsertOneAsync(entity);
-            }
-            catch (Exception e)
-            {
+            await _mundipaggDb.Produtos.InsertOneAsync(entity);
 
-                throw;
-            }
-           
         }
     }
 }

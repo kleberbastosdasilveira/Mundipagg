@@ -20,7 +20,7 @@ namespace Mundipagg.Services.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-         
+
             services.AddMvc();
             services.AddControllers();
             services.AddMundipaggStoreDatabaseSettingsDependency();

@@ -8,7 +8,7 @@ namespace Mundipagg.Infra.CrossCutting.InversionOfControl
     {
         public static void AddMundipaggStoreDatabaseSettingsDependency(this IServiceCollection sevice)
         {
-           sevice.AddSingleton<IMundipaggStoreDatabaseSettings>(sp => sp.GetRequiredService<IOptions<MundipaggStoreDatabaseSettings>>().Value);
+            sevice.AddSingleton<IMundipaggStoreDatabaseSettings>(sp => sp.GetRequiredService<IOptions<MundipaggStoreDatabaseSettings>>().Value);
         }
     }
 }

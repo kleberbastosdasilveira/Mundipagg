@@ -12,8 +12,7 @@ namespace Mundipagg.Aplication.ViewModels
         public string DescricaoProduto { get; set; }
         public string MarcaProduto { get; set; }
         public decimal Preco { get; set; }
-        public string ImagemUpload { get; set; }
-        public string Imagem { get; set; }
+        public string ImagemUrl { get; set; }
         public CategoriaProdutoViewModel CategoriadoProduto { get; set; }
     }
 }
