@@ -1,6 +1,6 @@
 ﻿using Mundipagg.Domain.Interfaces;
 
-namespace Mundipagg.Infra.CrossCutting
+namespace Mundipagg.Infra.Data.Repository
 {
     public class MundipaggStoreDatabaseSettings : IMundipaggStoreDatabaseSettings
     {

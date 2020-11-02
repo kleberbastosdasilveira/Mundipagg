@@ -10,9 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Mundipagg.Aplication\Mundipagg.Aplication.csproj" />
     <ProjectReference Include="..\Mundipagg.Domain\Mundipagg.Domain.csproj" />
     <ProjectReference Include="..\Mundipagg.Infra.Data\Mundipagg.Infra.Data.csproj" />
-    <ProjectReference Include="..\Mundipagg.Service\Mundipagg.Aplication.csproj" />
   </ItemGroup>
 
 </Project>

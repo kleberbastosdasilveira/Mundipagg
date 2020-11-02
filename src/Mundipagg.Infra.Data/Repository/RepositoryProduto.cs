@@ -17,7 +17,6 @@ namespace Mundipagg.Infra.Data.Repository
 
         public async Task Atualizar(string id, Produto entity)
         {
-            //var produto = Builders<Produto>.Filter.Eq(produto => produto.Id, entity.Id);
             await _mundipaggDb.Produtos.ReplaceOneAsync(produto => produto.Id == id, entity);
         }
 
